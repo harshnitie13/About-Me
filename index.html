@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Survey</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    .question { margin-bottom: 15px; }
+    #optional-questions, #more-optional-questions, #results { margin-top: 30px; }
+    button { margin-top: 20px; padding: 8px 16px; }
+  </style>
+</head>
+<body>
+  <h1>Personal Profile Survey</h1>
+
+  <form id="profileForm">
+    <h2>Mandatory Questions</h2>
+    <div class="question"><label>Name: <input name="Name" required></label></div>
+    <div class="question"><label>Date of Birth: <input type="date" name="Date of Birth" required></label></div>
+    <div class="question"><label>Location: <input name="Location" required></label></div>
+    <div class="question"><label>Family Location: <input name="Family Location" required></label></div>
+    <div class="question"><label>Education: <input name="Education" required></label></div>
+    <div class="question"><label>College: <input name="College" required></label></div>
+    <div class="question"><label>Profession: <input name="Profession" required></label></div>
+    <div class="question"><label>Hobbies: <input name="Hobbies" required></label></div>
+    <div class="question"><label>Community: <input name="Community" required></label></div>
+    <div class="question"><label>Diet: <input name="Diet" required></label></div>
+
+    <h2>Optional Questions</h2>
+    <div id="optional-questions"></div>
+
+    <button type="button" onclick="askMore()">Answer More Questions</button>
+    <div id="more-optional-questions"></div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    const optionalQuestions = [
+      { section: 'Family', question: 'Which state or region in India does your family originally hail from?', type: 'select', options: ['Maharashtra', 'Punjab', 'Tamil Nadu', 'Delhi NCR', 'Gujarat', 'Other'] },
+      { section: 'Personality', question: 'Which best describes your social battery?', type: 'select', options: ['Extrovert', 'Introvert', 'Ambivert'] },
+      { section: 'Lifestyle', question: 'Are you more of a morning person or a night owl?', type: 'select', options: ['Morning person', 'Night owl', 'In between'] },
+      { section: 'Career', question: 'What are your general aspirations for your professional growth in the next 5 years?', type: 'text' },
+      { section: 'Partner', question: 'How do you prefer to show affection or express love to a partner?', type: 'select', options: ['Words of affirmation', 'Acts of service', 'Gifts', 'Quality time', 'Physical touch'] },
+      { section: 'Hobbies', question: 'What kind of movies or TV shows do you enjoy watching?', type: 'select', options: ['Bollywood', 'Hollywood', 'Documentaries', 'Regional cinema', 'Mix of everything'] },
+      { section: 'Future', question: 'How do you envision your life after marriage?', type: 'text' },
+      { section: 'Communication', question: 'How do you handle disagreements with loved ones?', type: 'select', options: ['Directly', 'Cool off first', 'Seek compromise', 'Avoid conflict'] },
+      { section: 'Beliefs', question: 'What are your views on environmental sustainability?', type: 'select', options: ['Very passionate', 'Aware', 'Important but passive', 'Not a focus'] }
+    ];
+
+    const usedIndexes = new Set();
+
+    function getRandomQuestions(count) {
+      const result = [];
+      const sectionsSeen = new Set();
+      while (result.length < count && usedIndexes.size < optionalQuestions.length) {
+        const i = Math.floor(Math.random() * optionalQuestions.length);
+        const q = optionalQuestions[i];
+        if (!usedIndexes.has(i) && !sectionsSeen.has(q.section)) {
+          result.push({ ...q, index: i });
+          usedIndexes.add(i);
+          sectionsSeen.add(q.section);
+        }
+      }
+      return result;
+    }
+
+    function renderQuestions(questions, containerId) {
+      const container = document.getElementById(containerId);
+      questions.forEach(q => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        const label = document.createElement('label');
+        label.textContent = q.question;
+
+        if (q.type === 'text') {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.name = q.question;
+          label.appendChild(document.createElement('br'));
+          label.appendChild(input);
+        } else if (q.type === 'select') {
+          const select = document.createElement('select');
+          select.name = q.question;
+          q.options.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            select.appendChild(option);
+          });
+          label.appendChild(document.createElement('br'));
+          label.appendChild(select);
+        }
+
+        div.appendChild(label);
+        container.appendChild(div);
+      });
+    }
+
+    renderQuestions(getRandomQuestions(5), 'optional-questions');
+
+    function askMore() {
+      renderQuestions(getRandomQuestions(5), 'more-optional-questions');
+      document.querySelector('button[onclick="askMore()"]').disabled = true;
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<h2>Your Answers:</h2><ul>' +
+        [...formData.entries()]
+          .map(([q, a]) => `<li><strong>${q}</strong>: ${a}</li>`)
+          .join('') +
+        '</ul>';
+    });
+  </script>
+</body>
+</html>
