@@ -17,7 +17,6 @@
   <form id="profileForm">
     <h2>Mandatory Questions</h2>
     <div class="question"><label>Name: <input name="Name" required></label></div>
-    <div class="question"><label>Date of Birth: <input type="date" name="Date of Birth" required></label></div>
     <div class="question"><label>Location: <input name="Location" required></label></div>
     <div class="question"><label>Family Location: <input name="Family Location" required></label></div>
     <div class="question"><label>Education: <input name="Education" required></label></div>
@@ -46,7 +45,13 @@
       { section: 'Career', question: 'What are your general aspirations for your professional growth in the next 5 years?', type: 'text' },
       { section: 'Partner', question: 'How do you prefer to show affection or express love to a partner?', type: 'select', options: ['Words of affirmation', 'Acts of service', 'Gifts', 'Quality time', 'Physical touch'] },
       { section: 'Hobbies', question: 'What kind of movies or TV shows do you enjoy watching?', type: 'select', options: ['Bollywood', 'Hollywood', 'Documentaries', 'Regional cinema', 'Mix of everything'] },
-      { section: 'Future', question: 'How do you envision your life after marriage?', type: 'text' },
+      { section: 'Future', question: 'How do you envision your life after marriage?', type: 'checkbox',
+        options: [
+        'Building a Balanced Partnership – mutual respect, shared responsibilities, and personal growth',
+        'Creating a Warm, Family-Centric Home – rooted in values, traditions, and emotional connection',
+        'Growing Together Through Experiences – travel, shared hobbies, and evolving together',
+        'A Peaceful, Stable Daily Life – enjoying calm routines and emotional harmony'
+        ] },
       { section: 'Communication', question: 'How do you handle disagreements with loved ones?', type: 'select', options: ['Directly', 'Cool off first', 'Seek compromise', 'Avoid conflict'] },
       { section: 'Beliefs', question: 'What are your views on environmental sustainability?', type: 'select', options: ['Very passionate', 'Aware', 'Important but passive', 'Not a focus'] }
     ];
